@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
+
 df1 = pd.read_excel('d:/report/Result_analysis2.xls', na_values=['NA'])
 
 

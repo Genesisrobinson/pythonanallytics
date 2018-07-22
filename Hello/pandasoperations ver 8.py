@@ -5,9 +5,9 @@
 
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 
-Folder='d:/report'
+
+Folder='/Users/genesisrobinson/Documents/Excel'
 F1='DMP Execution suite1'
 F2='DMP Execution suite2'
 F3='DMP Execution suite3'
