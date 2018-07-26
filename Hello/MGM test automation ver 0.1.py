@@ -8,6 +8,7 @@ Folder='d:/report/MGM'
 F1='DMP-Regression-Build-90'
 #F2='DMP Execution suite2'
 #F3='DMP Execution suite3'
+R1='Result1'
 
 def fileprocess(File1):
     try:
@@ -19,9 +20,11 @@ def fileprocess(File1):
         values=[]
         Passcount = 0
         Failcount = 0
-        for lab, i in df1.iterrows():
+        for x in xlist:
             dictflag=False
-            for x in xlist:
+            Passcount = 0
+            Failcount = 0
+            for lab, i in df1.iterrows():
                 if df1.loc[lab, 'testclass']==x:
                     if dictflag == False:
                         dict1["tcname"]=x
@@ -31,13 +34,15 @@ def fileprocess(File1):
                     elif df1.loc[lab,'status']=="FAIL":
                         Failcount=Failcount+1
             #print(df1.loc[lab]['testclass'])
-            #dict1["Passcount"]=Passcount
-            #dict1["Failcount"]=Failcount
+            dict1["Passcount"]=Passcount
+            dict1["Failcount"]=Failcount
             values.append(dict1.copy())
 
         df3 = pd.DataFrame(values)
         print(df3)
-
+        writer = pd.ExcelWriter(str(Folder) + "/" + str(R1) + ".xls", engine=None)
+        df3.to_excel(writer, sheet_name='Sheet1')
+        writer.save()
     except ValueError:
        print('Input file types are not proper')
 
