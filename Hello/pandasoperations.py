@@ -6,6 +6,8 @@ df1 = pd.read_excel('d:/report/DMP Execution suite.xls', na_values=['NA'])
 
 df2 = pd.read_excel('d:/report/DMP Execution suite1.xls', na_values=['NA'])
                 # Make sure we order by account number so the comparisons work
+print("df1")
+
 
 dict={}
 values=[]
