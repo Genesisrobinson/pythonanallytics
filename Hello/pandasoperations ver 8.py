@@ -12,7 +12,7 @@ F1='DMP Execution suite1'
 F2='DMP Execution suite2'
 F3='DMP Execution suite3'
 F4='DMP Execution suite4'
-R1='Result_analysis1'
+R1='Result_analysis2'
 
 
 def fileprocess(File1,File2):

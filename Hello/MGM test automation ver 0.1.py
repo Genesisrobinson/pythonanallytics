@@ -15,10 +15,28 @@ def fileprocess(File1):
         df1 = pd.read_excel(str(Folder) + "/" + str(File1) + ".xls", sheet_name ='Sheet1',na_values=['NA'])
         xlist=list((df1['testclass'].unique().tolist()))
         #print(x)
+        dict1={}
+        values=[]
+        Passcount = 0
+        Failcount = 0
         for lab, i in df1.iterrows():
+            dictflag=False
             for x in xlist:
                 if df1.loc[lab, 'testclass']==x:
-                    print(df1.loc[lab]['testclass'])
+                    if dictflag == False:
+                        dict1["tcname"]=x
+                        dictflag=True
+                    if df1.loc[lab,'status']=="PASS":
+                        Passcount=Passcount+1
+                    elif df1.loc[lab,'status']=="FAIL":
+                        Failcount=Failcount+1
+            #print(df1.loc[lab]['testclass'])
+            #dict1["Passcount"]=Passcount
+            #dict1["Failcount"]=Failcount
+            values.append(dict1.copy())
+
+        df3 = pd.DataFrame(values)
+        print(df3)
 
     except ValueError:
        print('Input file types are not proper')
