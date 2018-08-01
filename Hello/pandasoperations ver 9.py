@@ -2,12 +2,20 @@
 ## created on 15th June
 ## updated for multiple files in functtion
 ## Exception Handling
+<<<<<<< HEAD
+=======
+## single write to File
+>>>>>>> 420c95fb6c3f0fcdd0e49aaee315a24c0a08af1a
 
 import pandas as pd
 import numpy as np
 
 
+<<<<<<< HEAD
 Folder='/Users/genesisrobinson/Documents/Excel'
+=======
+Folder='d:/report'
+>>>>>>> 420c95fb6c3f0fcdd0e49aaee315a24c0a08af1a
 F1='DMP Execution suite1'
 F2='DMP Execution suite2'
 F3='DMP Execution suite3'
@@ -33,10 +41,13 @@ def fileprocess(File1,File2,bool):
         columns=["testcasename"]
         df3=pd.DataFrame(index=count,columns=columns)
         df3=df1
+<<<<<<< HEAD
 
 
 
 
+=======
+>>>>>>> 420c95fb6c3f0fcdd0e49aaee315a24c0a08af1a
         for lab,i in df1.iterrows():
             bool = False
             for lab1,j in df2.iterrows():
@@ -84,14 +95,21 @@ def fileprocess(File1,File2,bool):
         print('Input file types are not proper')
 
 ret1=fileprocess(F2,F1,False)
+<<<<<<< HEAD
 
 ret2=fileprocess(ret1,F3,True)
 
 
+=======
+ret2=fileprocess(ret1,F3,True)
+>>>>>>> 420c95fb6c3f0fcdd0e49aaee315a24c0a08af1a
 ret3=fileprocess(ret2,F4,True)
 
 
 writer = pd.ExcelWriter(str(Folder) + "/" + str(R1) + ".xls", engine=None)
 ret3.to_excel(writer, sheet_name='Sheet1')
 writer.save()
+<<<<<<< HEAD
 
+=======
+>>>>>>> 420c95fb6c3f0fcdd0e49aaee315a24c0a08af1a

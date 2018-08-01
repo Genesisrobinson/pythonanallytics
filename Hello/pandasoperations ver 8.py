@@ -74,7 +74,7 @@ def fileprocess(File1,File2):
     except ValueError:
         print('Input file types are not proper')
 
-fileprocess(F2,F1)
+fileprocess(F1,F2)
 fileprocess(R1,F3)
 fileprocess(R1,F4)
 
