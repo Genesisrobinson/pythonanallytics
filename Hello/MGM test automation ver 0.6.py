@@ -10,7 +10,7 @@ import os,glob
 
 Folder='d:/report/MGM'
 R1='d:/report/MGM/Result/Result2'
-
+GlobalBool=False
 
 def dataextract(File1):
 
@@ -65,17 +65,26 @@ def fileprocess(File1,Fi1e2,nameofthefile):
         df1=File1
         df2=Fi1e2
 
-        df3=df1
+        nameofthefile = nameofthefile.split(Folder, 1)[1]
+        nameofthefile=nameofthefile[1:]
+
+        if GlobalBool == False:
+            print("inside")
+            print(df1.keys())
+            df1.columns = ['1tcname',str(nameofthefile) + "2passcount", str(nameofthefile)+ "3failcount",str(nameofthefile) +  '4method','5class','6message','7full-stacktrace']
+            print(df1.keys())
+
+        df3 = df1
 
         for lab,i in df1.iterrows():
             bool1 = False
             for lab1,j in df2.iterrows():
                 if df1.loc[lab,'1tcname'] == df2.loc[lab1,'1tcname']:
-                          df3.loc[lab,str(nameofthefile) + "/passcount"] =df2.loc[lab1,'2passcount']
-                          df3.loc[lab,str(nameofthefile) + "/failcount"]=df2.loc[lab1,'3failcount']
-                          df3.loc[lab, str(nameofthefile) + "/failcount"] = df2.loc[lab1, '3failcount']
-                          df3.loc[lab, str(nameofthefile) + "/message"] = df2.loc[lab1, '6message']
-                          df3.loc[lab, str(nameofthefile) + "/full-stacktrace"] = df2.loc[lab1, '7full-stacktrace']
+                          df3.loc[lab,str(nameofthefile) + ":passcount"] =df2.loc[lab1,'2passcount']
+                          df3.loc[lab,str(nameofthefile) + ":failcount"]=df2.loc[lab1,'3failcount']
+                          df3.loc[lab, str(nameofthefile) + ":failcount"] = df2.loc[lab1, '3failcount']
+                          df3.loc[lab, str(nameofthefile) + ":message"] = df2.loc[lab1, '6message']
+                          df3.loc[lab, str(nameofthefile) + ":full-stacktrace"] = df2.loc[lab1, '7full-stacktrace']
         for lab,i in df2.iterrows():
             bool1 = False
             for lab1,j in df1.iterrows():
@@ -83,10 +92,10 @@ def fileprocess(File1,Fi1e2,nameofthefile):
                            bool1=True
             if bool1 == False:
                         df3.loc[lab1+1, '1tcname'] = df2.loc[lab,'1tcname']
-                        df3.loc[lab1+1,str(nameofthefile) + "/passcount"] =df2.loc[lab,'2passcount']
-                        df3.loc[lab1+1,str(nameofthefile) + "/failcount"]=df2.loc[lab,'3failcount']
-                        df3.loc[lab1 + 1, str(nameofthefile) + "/message"] = df2.loc[lab, '6message']
-                        df3.loc[lab1 + 1, str(nameofthefile) + "/full-stacktrace"] = df2.loc[lab, '7full-stacktrace']
+                        df3.loc[lab1+1,str(nameofthefile) + ":passcount"] =df2.loc[lab,'2passcount']
+                        df3.loc[lab1+1,str(nameofthefile) + ":failcount"]=df2.loc[lab,'3failcount']
+                        df3.loc[lab1 + 1, str(nameofthefile) + ":message"] = df2.loc[lab, '6message']
+                        df3.loc[lab1 + 1, str(nameofthefile) + ":full-stacktrace"] = df2.loc[lab, '7full-stacktrace']
         return df3
 
     except ValueError:
@@ -113,9 +122,11 @@ for filename in glob.glob(os.path.join(Folder, '*.xls')):
             F1 = filename
             ret=fileprocess(F2,F1,nameofthefile)
             sflag=True
+            GlobalBool = True
         else:
             F2 = filename
             F1 = ret
+            GlobalBool = True
             ret=fileprocess(F1,F2,nameofthefile)
 
 writer = pd.ExcelWriter(R1 + ".xls", engine=None)
