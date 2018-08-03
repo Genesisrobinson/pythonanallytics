@@ -15,7 +15,7 @@ GlobalBool=False
 def dataextract(File1):
 
     try:
-        print("File:" + File1)
+        #print("File:" + File1)
         df1= pd.read_excel(File1,sheet_name ='Sheet1',na_values=['NA'])
         xlist=list((df1['testclass'].unique().tolist()))
         #print(x)
@@ -60,7 +60,7 @@ def dataextract(File1):
     except ValueError:
        print('Input file types are not proper')
 
-def fileprocess(File1,Fi1e2,nameofthefile):
+def fileprocess(File1,Fi1e2,nameofthefile,firstfile):
     try:
         df1=File1
         df2=Fi1e2
@@ -69,10 +69,10 @@ def fileprocess(File1,Fi1e2,nameofthefile):
         nameofthefile=nameofthefile[1:]
 
         if GlobalBool == False:
-            print("inside")
-            print(df1.keys())
-            df1.columns = ['1tcname',str(nameofthefile) + "2passcount", str(nameofthefile)+ "3failcount",str(nameofthefile) +  '4method','5class','6message','7full-stacktrace']
-            print(df1.keys())
+            firstfile = firstfile.split(Folder, 1)[1]
+            firstfile = firstfile[1:]
+            df1.columns = ['1tcname',str(firstfile) + "2passcount", str(firstfile)+ "3failcount",str(firstfile) +  '4method',str(firstfile) +  '5class',str(firstfile) + '6message', str(firstfile) +'7full-stacktrace']
+
 
         df3 = df1
 
@@ -116,18 +116,21 @@ for filename in glob.glob(os.path.join(Folder, '*.xls')):
     if fflag == False:
         F1 = filename
         fflag = True
+        firstfile=nameofthefile
     else:
         if sflag == False:
             F2 = F1
             F1 = filename
-            ret=fileprocess(F2,F1,nameofthefile)
+            print("Firstloop" + firstfile)
+            ret=fileprocess(F2,F1,nameofthefile,firstfile)
             sflag=True
             GlobalBool = True
         else:
             F2 = filename
             F1 = ret
             GlobalBool = True
-            ret=fileprocess(F1,F2,nameofthefile)
+            print("Secondloop" + nameofthefile)
+            ret=fileprocess(F1,F2,nameofthefile,None)
 
 writer = pd.ExcelWriter(R1 + ".xls", engine=None)
 ret.to_excel(writer, sheet_name='Sheet1')
