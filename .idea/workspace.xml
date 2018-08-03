@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="29e809df-0451-4bd1-b817-9530ec49c3fc" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Hello/MGM test automation ver 0.6.py" afterPath="$PROJECT_DIR$/Hello/MGM test automation ver 0.6.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Hello/fileoperation1.py" afterPath="$PROJECT_DIR$/Hello/fileoperation1.py" />
-    </list>
+    <list default="true" id="29e809df-0451-4bd1-b817-9530ec49c3fc" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
