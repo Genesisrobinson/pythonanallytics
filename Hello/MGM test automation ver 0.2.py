@@ -4,12 +4,15 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-Folder='d:/report/MGM'
+Folder='/Users/genesisrobinson/Documents/Excel'
 F1='DMP-Regression-Build-90'
 #F2='DMP Execution suite2'
 #F3='DMP Execution suite3'
 R1='Result'
+<<<<<<< HEAD
+=======
 
+>>>>>>> 420c95fb6c3f0fcdd0e49aaee315a24c0a08af1a
 
 def fileprocess(File1):
     global Passcount
@@ -44,6 +47,10 @@ def fileprocess(File1):
                              Errorope=True
 
             #print(df1.loc[lab]['testclass'])
+<<<<<<< HEAD
+            dict1["Passcount"]=Passcount
+            dict1["Failcount"]=Failcount
+=======
             dict1["2passcount"]=Passcount
             dict1["3failcount"]=Failcount
             if Failcount == 0:
@@ -52,12 +59,22 @@ def fileprocess(File1):
                 dict1["4method"] = None
                 dict1["5class"] = None
             values.append(dict1.copy())
+>>>>>>> 420c95fb6c3f0fcdd0e49aaee315a24c0a08af1a
 
+            values.append(dict1.copy())
+        #print(values)
         df3 = pd.DataFrame(values)
+<<<<<<< HEAD
+        print(df3)
+        writer = pd.ExcelWriter(str(Folder) + "/" + str(R1) + ".xls", engine=None)
+        df3.to_excel(writer, sheet_name='Sheet1')
+        writer.save()
+=======
         return df3
         #writer = pd.ExcelWriter(str(Folder) + "/" + str(R1) + ".xls", engine=None)
         #df3.to_excel(writer, sheet_name='Sheet1')
         #writer.save()
+>>>>>>> 420c95fb6c3f0fcdd0e49aaee315a24c0a08af1a
 
     except ValueError:
        print('Input file types are not proper')

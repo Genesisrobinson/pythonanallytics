@@ -1,10 +1,16 @@
 import pandas as pd
 import numpy as np
+import xlrd
+
+
 import matplotlib.pyplot as plt
 
-df1 = pd.read_excel('d:/report/DMP Execution suite.xls', na_values=['NA'])
+#df1=xlrd.open_workbook("DMP Execution suite1.xls")
+#df1=xlrd.open_workbook("DMP Execution suite1.xls")
 
-df2 = pd.read_excel('d:/report/DMP Execution suite1.xls', na_values=['NA'])
+df1 = pd.read_excel('DMP Execution suite1.xls', na_values=['NA'])
+
+df2 = pd.read_excel('DMP Execution suite2.xls', na_values=['NA'])
                 # Make sure we order by account number so the comparisons work
 
 dict={}
@@ -25,6 +31,6 @@ for i in df.index:
                   df.loc[i,'Duration1']=df2['uration in ms'][j]
 
 print(df)
-writer = pd.ExcelWriter('d:/report/pandas_result.xls', engine=None)
+writer = pd.ExcelWriter('pandas_result.xls', engine=None)
 df.to_excel(writer, sheet_name='Sheet1')
 writer.save()
