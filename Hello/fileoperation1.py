@@ -3,16 +3,26 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-
-df1 = pd.read_excel('d:/report/MGM/DMP-Regression-Build-87.xls',sheet_name ='Sheet1', na_values=['NA'])
+Folder='d:/report/'
+R1="Final"
+df1 = pd.read_excel('d:/report/MGM/result/Result2.xls',sheet_name ='Sheet1', na_values=['NA'])
 
 #print(df1.keys())
-#print(df1.module)
 
-#df1.module=df1.module.str.slice(0,9)
-#df1['module'] = df1['module'].str.extract("\((.*)\)")
-#print(df1['module'].str.extract(r'(.*)',expand=False))
-#found = re.search('AAA(.+?)ZZZ', text).group(1)
-#print(df1['module'].str.extract('(.+?)\('))
-print(df1['module'].str.extract('(.+?)\('))
-#print(df1.module1)
+a = []
+index = []
+for x, y in enumerate(df1.columns):
+    if "fail" in y:
+        a.append(y)
+        index.append(x)
+
+print(df1.keys())
+print(index)
+
+df1['final'] = np.where((df1.loc[:, df1.columns[index]] == "None").all(axis=1), "passed", "failed")
+
+
+
+writer = pd.ExcelWriter(str(Folder) + "/" + str(R1) + ".xls", engine=None)
+df1.to_excel(writer, sheet_name='Sheet1')
+writer.save()

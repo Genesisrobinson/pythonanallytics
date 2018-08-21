@@ -5,9 +5,10 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import os,glob
+import os,glob
 
 
-
+# pls modeify the source folder and target folder as required
 Folder='d:/report/MGM'
 R1='d:/report/MGM/Result/Result2'
 GlobalBool=False
@@ -15,7 +16,7 @@ GlobalBool=False
 def dataextract(File1):
 
     try:
-        #print("File:" + File1)
+        print("File:" + File1)
         df1= pd.read_excel(File1,sheet_name ='Sheet1',na_values=['NA'])
         xlist=list((df1['testclass'].unique().tolist()))
         #print(x)
@@ -31,6 +32,7 @@ def dataextract(File1):
                 if df1.loc[lab, 'testclass']==x:
                     if dictflag == False:
                         dict1["1tcname"]=x
+                        dict1["0module"]=df1.loc[lab,"module"]
                         dictflag=True
                     if df1.loc[lab,'status']=="PASS":
                         Passcount=Passcount+1
@@ -71,7 +73,7 @@ def fileprocess(File1,Fi1e2,nameofthefile,firstfile):
         if GlobalBool == False:
             firstfile = firstfile.split(Folder, 1)[1]
             firstfile = firstfile[1:]
-            df1.columns = ['1tcname',str(firstfile) + "2passcount", str(firstfile)+ "3failcount",str(firstfile) +  '4method',str(firstfile) +  '5class',str(firstfile) + '6message', str(firstfile) +'7full-stacktrace']
+            df1.columns = ['0module','1tcname',str(firstfile) + "2passcount", str(firstfile)+ "3failcount",str(firstfile) +  '4method',str(firstfile) +  '5class',str(firstfile) + '6message', str(firstfile) +'7full-stacktrace']
 
 
         df3 = df1
@@ -92,10 +94,12 @@ def fileprocess(File1,Fi1e2,nameofthefile,firstfile):
                            bool1=True
             if bool1 == False:
                         df3.loc[lab1+1, '1tcname'] = df2.loc[lab,'1tcname']
+                        df3.loc[lab1+1, '0module'] = df2.loc[lab, '0module']
                         df3.loc[lab1+1,str(nameofthefile) + ":passcount"] =df2.loc[lab,'2passcount']
                         df3.loc[lab1+1,str(nameofthefile) + ":failcount"]=df2.loc[lab,'3failcount']
                         df3.loc[lab1 + 1, str(nameofthefile) + ":message"] = df2.loc[lab, '6message']
                         df3.loc[lab1 + 1, str(nameofthefile) + ":full-stacktrace"] = df2.loc[lab, '7full-stacktrace']
+
         return df3
 
     except ValueError:
@@ -119,7 +123,7 @@ for filename in glob.glob(os.path.join(Folder, '*.xls')):
         if sflag == False:
             F2 = F1
             F1 = filename
-            print("Firstloop" + firstfile)
+            #print("Firstloop" + firstfile)
             ret=fileprocess(F2,F1,nameofthefile,firstfile)
             sflag=True
             GlobalBool = True
@@ -127,19 +131,63 @@ for filename in glob.glob(os.path.join(Folder, '*.xls')):
             F2 = filename
             F1 = ret
             GlobalBool = True
-            print("Secondloop" + nameofthefile)
+            #print("Secondloop" + nameofthefile)
             ret=fileprocess(F1,F2,nameofthefile,None)
 
-#ret['module'] = ret['module'].str.extract("(.+?)\(")
+#print(ret.keys())
+ret['module'] = pd.np.where(ret["0module"].str.contains("failed"),ret['0module'].str.extract("(.+?)\("),ret['0module'])
 temp=pd.DataFrame(ret['1tcname'].str.rsplit('.',1).tolist(),columns="package 1tcname".split())
 
 ret["package"]=temp["package"]
 ret["1tcname"]=temp["1tcname"]
+del ret['0module']
 
 ret = ret[['package'] + ret.columns[:-1].tolist()]
+ret = ret[['module'] + ret.columns[:-1].tolist()]
+
+
+a=[]
+index=[]
+for x, y in enumerate(ret.columns):
+    if "fail" in y:
+        # print(str(x) + " " + str(y))
+        a.append(y)
+        index.append(x)
+
+ret["result"] = np.where(np.logical_or(ret.loc[:,ret.columns[index]] == 0, ret.loc[:,ret.columns[index]] == "none").any(axis=1),"passed","failed")
+
+xlist=list((ret['module'].unique().tolist()))
+
+
+summary=[]
+dict={}
+
+for x in xlist:
+    passed = 0
+    failed = 0
+    for lob,value in ret.iterrows():
+
+        if ret.loc[lob,"module"] == x:
+            if ret.loc[lob,"result"] == "passed":
+                passed=passed+1
+            else:
+                failed=failed+1
+    dict["Module"] = x
+    dict["TotalPass"]=passed
+    dict["TotalFail"]=failed
+    summary.append(dict.copy())
+
+
+df4=pd.DataFrame(summary)
+
+
+print(df4)
 
 writer = pd.ExcelWriter(R1 + ".xls", engine=None)
+df4.to_excel(writer, sheet_name='Summary')
 ret.to_excel(writer, sheet_name='Sheet1')
+
+
 writer.save()
 
 
